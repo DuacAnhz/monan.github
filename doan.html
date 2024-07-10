@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Đồ Ăn Huế Trực Tuyến</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+       
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-height: 40px;
+            vertical-align: middle;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ccc;
+        }
+
+        .main-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .item-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .item-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-section {
+            grid-column: span 2;
+        }
+
+        .btn-action {
+            margin-left: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        button.btn-success {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button.btn-success:hover {
+            background-color: #218838;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+            nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .main-section {
+                grid-template-columns: 1fr;
+            }
+
+            .item-container {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="doan.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="./OIP.jpg" alt="Logo của bạn" class="logo">
+            <h1>Đặt đồ ăn Huế trực tuyến</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="datmon.html">Đặt món</a></li>
+                    <li><a href="#about">Quản lý</a>
+                        <ul class="sub-menu">
+                            <li><a href="doan.html">Thêm món</a></li>
+                            <li><a href="nguoidat.html">Danh sách người đặt</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="lienhe.html">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<div class="container">
+    <div class="main-section">
+        <div class="item-container form-section">
+            <h2>Thêm món ăn mới</h2>
+            <label>Tên đồ ăn:</label>
+            <input type="text" id="tenda" name="tenda">
+            <br>
+            <label>Hình ảnh (URL):</label>
+            <input type="text" id="hinhanh" name="hinhanh">
+            <br>
+            <label>Giá:</label>
+            <input type="number" id="gia" name="gia">
+            <br>
+            <label>Mô tả:</label>
+            <textarea id="mota" name="mota"></textarea>
+            <br>
+            <label>Thành phần chế biến:</label>
+            <textarea id="thanh_phan_che_bien" name="thanh_phan_che_bien"></textarea>
+            <br>
+            <label>Danh mục:</label>
+            <select id="danh_muc" name="danh_muc" class="form-select">
+                <option value="monchinh">Món chính</option>
+                <option value="monphu">Món phụ</option>
+                <option value="monkem">Món kèm</option>
+            </select>
+            <br>
+            <label>Số lượng:</label>
+            <input type="number" id="soluong_monan" name="soluong_monan">
+            <br>
+            <button id="btn-dat-monan" class="btn btn-success">Đặt hàng</button>
+            <button id="btn-reset" class="btn btn-secondary">Đặt lại</button>
+            <button id="btn-cap-nhat" style="display:none;" class="btn btn-primary">Cập nhật</button>
+            
+        </div>
+        <div id="list-monan"></div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    function isValidImageUrl(url) {
+        return url.startsWith('http://') || url.startsWith('https://');
+    }
+
+    function fetchMonAnList() {
+        $.ajax({
+            url: 'http://localhost:3000/monan',
+            type: 'GET',
+            success: function(response) {
+                displayMonAnList(response);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Lỗi khi tải danh sách món ăn!');
+            }
+        });
+    }
+
+    function displayMonAnList(data) {
+        var listMonAn = $('#list-monan');
+        listMonAn.empty(); 
+        data.forEach(function(item) {
+            var itemHTML = `
+                <div class="item-container">
+                    <h3>${item.tenda}</h3>
+                    <img src="${item.hinhanh}" alt="${item.tenda}" style="max-width: 100%; height: auto;">
+                    <p>Giá: ${item.gia}</p>
+                    <p>Mô tả: ${item.mota}</p>
+                    <p>Thành phần chế biến: ${item.thanh_phan_che_bien}</p>
+                    <p>Danh mục: ${item.danh_muc}</p>
+                    <p>Số lượng: ${item.soluong_monan}</p>
+                    <button class="btn btn-primary btn-action btn-edit" data-id="${item.id}">Sửa</button>
+                    <button class="btn btn-danger btn-action btn-delete" data-id="${item.id}">Xóa</button>
+                </div>
+            `;
+            listMonAn.append(itemHTML);
+        });
+        $('.btn-edit').click(function() {
+            var id = $(this).data('id');
+            getSuaMonAn(id);
+        });
+
+        $('.btn-delete').click(function() {
+            var id = $(this).data('id');
+            xoaMonAn(id);
+        });
+    }
+
+    function getSuaMonAn(id) {
+        $.ajax({
+            url: `http://localhost:3000/monan/${id}`,
+            type: 'GET',
+            success: function(response) {
+                $('#tenda').val(response.tenda);
+                $('#hinhanh').val(response.hinhanh);
+                $('#gia').val(response.gia);
+                $('#mota').val(response.mota);
+                $('#thanh_phan_che_bien').val(response.thanh_phan_che_bien);
+                $('#danh_muc').val(response.danh_muc);
+                $('#soluong_monan').val(response.soluong_monan);
+                $('#btn-dat-monan').hide();
+                $('#btn-cap-nhat').show().data('id', response.id); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Lỗi khi lấy thông tin món ăn để sửa!');
+            }
+        });
+    }
+    function datMonAn() {
+        var tenda = $('#tenda').val();
+        var hinhanh = $('#hinhanh').val();
+        var gia = $('#gia').val();
+        var mota = $('#mota').val();
+        var thanh_phan_che_bien = $('#thanh_phan_che_bien').val();
+        var danh_muc = $('#danh_muc').val();
+        var soluong_monan = $('#soluong_monan').val();
+        if (!tenda || !hinhanh || !gia || !mota || !thanh_phan_che_bien || !danh_muc || !soluong_monan) {
+            alert('Vui lòng nhập đầy đủ thông tin món ăn!');
+            return;
+        }
+        if (!isValidImageUrl(hinhanh)) {
+            alert('Vui lòng nhập URL hình ảnh hợp lệ!');
+            return;
+        }
+        var monanData = {
+            tenda: tenda,
+            hinhanh: hinhanh,
+            gia: gia,
+            mota: mota,
+            thanh_phan_che_bien: thanh_phan_che_bien,
+            danh_muc: danh_muc,
+            soluong_monan: soluong_monan
+        };
+
+        $.ajax({
+            url: 'http://localhost:3000/monan',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(monanData),
+            success: function(response) {
+                alert('Thêm món ăn thành công!');
+                fetchMonAnList();
+                resetForm();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Lỗi khi thêm món ăn!');
+            }
+        });
+    }
+
+    function capNhatMonAn() {
+        var id = $('#btn-cap-nhat').data('id'); 
+        var tenda = $('#tenda').val();
+        var hinhanh = $('#hinhanh').val();
+        var gia = $('#gia').val();
+        var mota = $('#mota').val();
+        var thanh_phan_che_bien = $('#thanh_phan_che_bien').val();
+        var danh_muc = $('#danh_muc').val();
+        var soluong_monan = $('#soluong_monan').val();
+        if (!tenda || !hinhanh || !gia || !mota || !thanh_phan_che_bien || !danh_muc || !soluong_monan) {
+            alert('Vui lòng nhập đầy đủ thông tin món ăn!');
+            return;
+        }
+        if (!isValidImageUrl(hinhanh)) {
+            alert('Vui lòng nhập URL hình ảnh hợp lệ!');
+            return;
+        }
+
+        var monanData = {
+            tenda: tenda,
+            hinhanh: hinhanh,
+            gia: gia,
+            mota: mota,
+            thanh_phan_che_bien: thanh_phan_che_bien,
+            danh_muc: danh_muc,
+            soluong_monan: soluong_monan
+        };
+
+        $.ajax({
+            url: `http://localhost:3000/monan/${id}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(monanData),
+            success: function(response) {
+                alert('Cập nhật món ăn thành công!');
+                fetchMonAnList();
+                resetForm();
+                $('#btn-dat-monan').show();
+                $('#btn-cap-nhat').hide();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Lỗi khi cập nhật món ăn!');
+            }
+        });
+    }
+
+    function xoaMonAn(id) {
+        if (confirm('Bạn có chắc muốn xóa món ăn này không?')) {
+            $.ajax({
+                url: `http://localhost:3000/monan/${id}`,
+                type: 'DELETE',
+                success: function(response) {
+                    alert('Xóa món ăn thành công!');
+                    fetchMonAnList();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Lỗi khi xóa món ăn!');
+                }
+            });
+        }
+    }
+    $(document).ready(function() {
+    $('#btn-reset').click(function() {
+        resetForm();
+    });
+    function resetForm() {
+        $('#tenda').val('');
+        $('#hinhanh').val('');
+        $('#gia').val('');
+        $('#mota').val('');
+        $('#thanh_phan_che_bien').val('');
+        $('#danh_muc').val('monchinh');
+        $('#soluong_monan').val('');
+        $('#btn-dat-monan').show();
+        $('#btn-cap-nhat').hide();
+    }
+});
+
+    function resetForm() {
+        $('#tenda').val('');
+        $('#hinhanh').val('');
+        $('#gia').val('');
+        $('#mota').val('');
+        $('#thanh_phan_che_bien').val('');
+        $('#danh_muc').val('monchinh');
+        $('#soluong_monan').val('');
+    }
+
+    $(document).ready(function() {
+        fetchMonAnList();
+
+        // Bắt sự kiện click cho nút Đặt món
+        $('#btn-dat-monan').click(function() {
+            datMonAn();
+        });
+
+        // Bắt sự kiện click cho nút Cập nhật
+        $('#btn-cap-nhat').click(function() {
+            capNhatMonAn();
+        });
+    });
+</script>
+<script> var managementItem = document.querySelector('li:nth-child(3)');
+    var subMenu = document.querySelector('.sub-menu');
+    
+    managementItem.addEventListener('click', function() {
+  
+        subMenu.classList.toggle('active');
+    });</script>
+</body>
+</html>

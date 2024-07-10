@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt món ăn</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="doan.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="./OIP.jpg" alt="Logo của bạn" class="logo">
+            <h1>Đặt đồ ăn Huế trực tuyến</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="datmon.html">Đặt món</a></li>
+                    <li><a href="#about">Quản lý</a>
+                        <ul class="sub-menu">
+                            <li><a href="doan.html">Thêm món</a></li>
+                            <li><a href="nguoidat.html">Danh sách người đặt</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="lienhe.html">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+        
+    <main>
+        <div class="containe">
+            <form id="order-form">
+                <label for="ten">Tên người đặt:</label>
+                <input type="text" id="ten" name="ten" required>
+                
+                <label for="dia_chi">Địa chỉ:</label>
+                <input type="text" id="dia_chi" name="dia_chi" required>
+                
+                <label for="sdt">Số điện thoại:</label>
+                <input type="text" id="sdt" name="sdt" required>
+                
+                <label for="datmon">Đặt món:</label>
+                <select id="datmon" name="datmon" required>
+                    <option value="">Chọn món ăn</option>
+                    <option value="Bún bò Huế">Bún bò Huế</option>
+                   
+                    <option value="Nem lụi Huế">Nem lụi Huế</option>
+                    <option value="Tôm chua Huế">Tôm chua Huế</option>
+                    <option value="Bánh bột lọc">Bánh bột lọc</option>
+                    <option value="Bánh khoái">Bánh khoái</option>
+                    <option value="Hến xúc bánh tráng">Hến xúc bánh tráng</option>
+                    <option value="Cơm âm phủ">Cơm âm phủ</option>
+                    <option value="Bún thịt nướng">Bún thịt nướng</option>
+                    <option value="Bánh bèo">Bánh bèo</option>
+                    <option value="Bánh khoái cá kình">Bánh khoái cá kình</option>
+                     <option value="Cơm hến">Cơm hến</option>
+                     <option value="Bánh ép khô">Bánh ép khô</option>
+                    <!-- Thêm các món ăn khác nếu cần -->
+                </select>
+                
+                <label for="tong_tien">Tổng tiền:</label>
+                <input type="number" id="tong_tien" name="tong_tien" min="0" readonly>
+                
+                <button type="submit" id="btn-dat-monan">Đặt món</button>
+                <button type="button" id="btn-cap-nhat" style="display: none;">Cập nhật</button>
+                <button type="button" id="btn-reset">Reset</button>
+            </form>
+            
+            <div id="danh-sach-nguoi-dat">
+                <div id="list-monan"></div>
+            </div>
+        </div>
+    </main>
+  
+</body>
+</html>
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>   
+     <script >
+
+        $(document).ready(function() {
+            $('#datmon').change(function() {
+                var selectedMonAn = $(this).val();
+                var tongTien = 0;
+                switch (selectedMonAn) {
+                    case 'Bún bò Huế':
+                        tongTien = 50000; 
+                        break;
+                    case 'Nem lụi Huế':
+                        tongTien = 100000; 
+                        break;
+                    case 'Tôm chua Huế':
+                        tongTien = 20000; 
+                        break;
+                    case 'Bánh bột lọc':
+                        tongTien = 40000; 
+                        break;
+                    case 'Bánh khoái':
+                        tongTien = 60000; 
+                        break;   
+                    case 'Hến xúc bánh tráng':
+                        tongTien = 120000; 
+                        break;  
+                    case 'Cơm âm phủ':
+                        tongTien = 150000; 
+                        break;   
+                    case 'Bún thịt nướng':
+                        tongTien = 30000; 
+                        break;   
+                    case 'Bánh bèo':
+                        tongTien = 20000; 
+                        break;   
+                    case 'Bánh khoái cá kình':
+                        tongTien = 25000; 
+                        break;   
+                    case 'Cơm hến':
+                        tongTien = 10000; 
+                        break;
+                    case 'Bánh ép khô':
+                        tongTien = 200000; 
+                        break;
+                    default:
+                        tongTien = 0; 
+                        break;
+                }
+                $('#tong_tien').val(tongTien);
+            });
+            function fetchMonAnList() {
+                $.ajax({
+                    url: 'http://localhost:3000/datmon',
+                    type: 'GET',
+                    success: function(response) {
+                        displayMonAnList(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi tải danh sách món ăn!');
+                    }
+                });
+            }
+            function displayMonAnList(data) {
+                var listMonAn = $('#list-monan');
+                listMonAn.empty();
+                data.forEach(function(item) {
+                    var itemHTML = `
+                        <div class="item-container">
+                            <h3>${item.ten}</h3>
+                            <p>Địa chỉ: ${item.dia_chi}</p>
+                            <p>Số điện thoại: ${item.sdt}</p>
+                            <p>Đặt món: ${item.datmon}</p>
+                            <p>Tổng tiền: ${item.tong_tien}</p>
+                            <button class="btn btn-primary btn-action btn-edit" data-id="${item.id}">Sửa</button>
+                            <button class="btn btn-danger btn-action btn-delete" data-id="${item.id}">Xóa</button>
+                        </div>
+                    `;
+                    listMonAn.append(itemHTML);
+                });
+                $('.btn-edit').click(function() {
+                    var id = $(this).data('id');
+                    getSuaMonAn(id);
+                });
+        
+                $('.btn-delete').click(function() {
+                    var id = $(this).data('id');
+                    xoaMonAn(id);
+                });
+            }
+            function getSuaMonAn(id) {
+                $.ajax({
+                    url: `http://localhost:3000/datmon/${id}`,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#ten').val(response.ten);
+                        $('#dia_chi').val(response.dia_chi);
+                        $('#sdt').val(response.sdt);
+                        $('#datmon').val(response.datmon);
+                        $('#tong_tien').val(response.tong_tien);
+                        $('#btn-dat-monan').hide();
+                        $('#btn-cap-nhat').show().data('id', response.id); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi lấy thông tin món ăn để sửa!');
+                    }
+                });
+            }
+            function datMonAn() {
+                var ten = $('#ten').val();
+                var dia_chi = $('#dia_chi').val();
+                var sdt = $('#sdt').val();
+                var datmon = $('#datmon').val();
+                var tong_tien = $('#tong_tien').val();
+                
+                if (!ten || !dia_chi || !sdt || !datmon || !tong_tien) {
+                    alert('Vui lòng nhập đầy đủ thông tin!');
+                    return;
+                }
+        
+                var monAnData = {
+                    ten: ten,
+                    dia_chi: dia_chi,
+                    sdt: sdt,
+                    datmon: datmon,
+                    tong_tien: tong_tien
+                };
+        
+                $.ajax({
+                    url: 'http://localhost:3000/datmon',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(monAnData),
+                    success: function(response) {
+                        alert('Đặt món thành công!');
+                        fetchMonAnList();
+                        resetForm();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi đặt món!');
+                    }
+                });
+            }
+            function capNhatMonAn() {
+                var id = $('#btn-cap-nhat').data('id'); 
+                var ten = $('#ten').val();
+                var dia_chi = $('#dia_chi').val();
+                var sdt = $('#sdt').val();
+                var datmon = $('#datmon').val();
+                var tong_tien = $('#tong_tien').val();
+                
+                if (!ten || !dia_chi || !sdt || !datmon || !tong_tien) {
+                    alert('Vui lòng nhập đầy đủ thông tin!');
+                    return;
+                }
+        
+                var monAnData = {
+                    ten: ten,
+                    dia_chi: dia_chi,
+                    sdt: sdt,
+                    datmon: datmon,
+                    tong_tien: tong_tien
+                };
+        
+                $.ajax({
+                    url: `http://localhost:3000/datmon/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(monAnData),
+                    success: function(response) {
+                        alert('Cập nhật món thành công!');
+                        fetchMonAnList();
+                        resetForm();
+                        $('#btn-dat-monan').show();
+                        $('#btn-cap-nhat').hide();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi cập nhật món!');
+                    }
+                });
+            }
+            function xoaMonAn(id) {
+                if (confirm('Bạn có chắc muốn xóa món này không?')) {
+                    $.ajax({
+                        url: `http://localhost:3000/datmon/${id}`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            alert('Xóa món thành công!');
+                            fetchMonAnList();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert('Lỗi khi xóa món!');
+                        }
+                    });
+                }
+            }
+            function resetForm() {
+                $('#ten').val('');
+                $('#dia_chi').val('');
+                $('#sdt').val('');
+                $('#datmon').val('');
+                $('#tong_tien').val('');
+                $('#btn-dat-monan').show();
+                $('#btn-cap-nhat').hide();
+            }
+            $('#btn-dat-monan').click(function() {
+                datMonAn();
+            });
+            $('#btn-cap-nhat').click(function() {
+                capNhatMonAn();
+            });
+            $('#btn-reset').click(function() {
+                resetForm();
+            });
+            fetchMonAnList();
+        });
+        </script>
+         <script> var managementItem = document.querySelector('li:nth-child(3)');
+            var subMenu = document.querySelector('.sub-menu');
+            
+            managementItem.addEventListener('click', function() {
+          
+                subMenu.classList.toggle('active');
+            });</script> 
+
+</body>
+</html>

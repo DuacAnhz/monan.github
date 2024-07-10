@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Food</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 30px; 
+            margin-right: 10px;
+        }
+
+        .header-menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .header-menu ul li {
+            margin-right: 15px; 
+            position: relative; 
+        }
+
+        .header-menu ul li ul.sub-menu {
+            display: none;
+            position: absolute;
+            background-color: #343a40; 
+            padding: 10px;
+            border-radius: 4px;
+            top: 100%; 
+            left: 0;
+            z-index: 100;
+        }
+
+        .header-menu ul li:hover ul.sub-menu {
+            display: block; 
+        }
+
+        .header-menu ul li ul.sub-menu li {
+            margin: 5px 0;
+        }
+
+        .header-menu ul li ul.sub-menu li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .header-menu ul li ul.sub-menu li a:hover {
+            color: #cccccc;
+        }
+
+        .container-main {
+            padding-top: 170px; 
+            padding-bottom: 20px; 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .item-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        #danh-sach-nguoi-dat {
+            margin-top: 20px;
+        }
+
+        #error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="doan.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="./OIP.jpg" alt="Logo của bạn" class="logo">
+            <h1>Đặt đồ ăn Huế trực tuyến</h1>
+            <nav>
+                <ul class="header-menu">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="datmon.html">Đặt món</a></li>
+                    <li>
+                        <a href="#about">Quản lý</a>
+                        <ul class="sub-menu">
+                            <li><a href="doan.html">Thêm món</a></li>
+                            <li><a href="nguoidat.html">Danh sách người đặt</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="lienhe.html">Liên hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container-main">
+        <div class="item-container" id="nguoidat-section">
+            <h3>Người Đặt</h3>
+            <form id="order-form">
+                <label>Tên người đặt:</label>
+                <input type="text" id="ten" name="ten" required />
+                <br/>
+                <label>Địa chỉ:</label>
+                <input type="text" id="dia_chi" name="dia_chi" required /> 
+                <br/>
+                <label>Số điện thoại:</label>
+                <input type="tel" id="sdt" name="sdt" pattern="[0-9]+" title="Chỉ nhập số" required /> 
+                <br/>
+                <label>Đặt món:</label>
+                <input type="text" id="datmon" name="datmon" required /> 
+                <br/>
+                <label>Số lượng:</label>
+                <input type="number" id="soluong_nguoidat" name="soluong_nguoidat" required /> 
+                <br/>
+                <label>Tổng tiền:</label>
+                <input type="number" id="tong_tien" name="tong_tien" required /> 
+                <br/>
+                <button type="button" id="btn-dat-monan" class="btn btn-success">Đặt hàng</button>
+                <button type="button" id="btn-reset" class="btn btn-secondary">Đặt lại</button>
+                <button type="button" id="btn-cap-nhat" style="display:none;" class="btn btn-primary">Cập nhật</button>
+            </form>
+        </div>
+        <div id="danh-sach-nguoi-dat">
+        </div>
+        <div id="error-message"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            fetchNguoiDatList();
+            
+            $('#btn-dat-monan').click(function() {
+                datNguoiDat();
+            });
+            
+            $('#btn-cap-nhat').click(function() {
+                capNhatNguoiDat();
+            });
+
+            $('#btn-reset').click(function() {
+                resetForm();
+            });
+
+            function fetchNguoiDatList() {
+                $.ajax({
+                    url: 'http://localhost:3000/nguoidat',
+                    type: 'GET',
+                    success: function(response) {
+                        displayNguoiDatList(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi tải danh sách người đặt!');
+                    }
+                });
+            }
+
+            function displayNguoiDatList(data) {
+                var danhSachNguoiDat = $('#danh-sach-nguoi-dat');
+                danhSachNguoiDat.empty(); 
+                data.forEach(function(item) {
+                    var itemHTML = `
+                        <div class="item-container">
+                            <h3>${item.ten}</h3>
+                            <p>Địa chỉ: ${item.dia_chi}</p>
+                            <p>Số điện thoại: ${item.sdt}</p>
+                            <p>Đặt món: ${item.datmon}</p>
+                            <p>Số lượng: ${item.soluong_nguoidat}</p>
+                            <p>Tổng tiền: ${item.tong_tien}</p>
+                            <button class="btn btn-primary btn-action btn-edit" data-id="${item.id}">Sửa</button>
+                            <button class="btn btn-danger btn-action btn-delete" data-id="${item.id}">Xóa</button>
+                        </div>
+                    `;
+                    danhSachNguoiDat.append(itemHTML);
+                });
+                $('.btn-edit').click(function() {
+                    var id = $(this).data('id');
+                    getSuaNguoiDat(id);
+                });
+    
+                $('.btn-delete').click(function() {
+                    var id = $(this).data('id');
+                    xoaNguoiDat(id);
+                });
+            }
+
+            function getSuaNguoiDat(id) {
+                $.ajax({
+                    url: `http://localhost:3000/nguoidat/${id}`,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#ten').val(response.ten);
+                        $('#dia_chi').val(response.dia_chi);
+                        $('#sdt').val(response.sdt);
+                        $('#datmon').val(response.datmon);
+                        $('#soluong_nguoidat').val(response.soluong_nguoidat);
+                        $('#tong_tien').val(response.tong_tien);
+                        $('#btn-dat-monan').hide();
+                        $('#btn-cap-nhat').show().data('id', response.id); 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi lấy thông tin người đặt để sửa!');
+                    }
+                });
+            }
+
+            function datNguoiDat() {
+                var ten = $('#ten').val();
+                var dia_chi = $('#dia_chi').val();
+                var sdt = $('#sdt').val();
+                var datmon = $('#datmon').val();
+                var soluong_nguoidat = $('#soluong_nguoidat').val();
+                var tong_tien = $('#tong_tien').val();
+                if (!ten || !dia_chi || !sdt || !datmon || !soluong_nguoidat || !tong_tien) {
+                    alert('Vui lòng nhập đầy đủ thông tin người đặt!');
+                    return;
+                }
+                var nguoiDatMoi = {
+                    ten: ten,
+                    dia_chi: dia_chi,
+                    sdt: sdt,
+                    datmon: datmon,
+                    soluong_nguoidat: soluong_nguoidat,
+                    tong_tien: tong_tien
+                };
+    
+                $.ajax({
+                    url: 'http://localhost:3000/nguoidat',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(nguoiDatMoi),
+                    success: function(response) {
+                        alert('Thêm người đặt thành công!');
+                        fetchNguoiDatList();
+                        resetForm();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi thêm người đặt!');
+                    }
+                });
+            }
+    
+            function capNhatNguoiDat() {
+                var id = $('#btn-cap-nhat').data('id'); 
+                var ten = $('#ten').val();
+                var dia_chi = $('#dia_chi').val();
+                var sdt = $('#sdt').val();
+                var datmon = $('#datmon').val();
+                var soluong_nguoidat = $('#soluong_nguoidat').val();
+                var tong_tien = $('#tong_tien').val();
+                if (!ten || !dia_chi || !sdt || !datmon || !soluong_nguoidat || !tong_tien) {
+                    alert('Vui lòng nhập đầy đủ thông tin người đặt!');
+                    return;
+                }
+                var nguoiDatMoi = {
+                    ten: ten,
+                    dia_chi: dia_chi,
+                    sdt: sdt,
+                    datmon: datmon,
+                    soluong_nguoidat: soluong_nguoidat,
+                    tong_tien: tong_tien
+                };
+    
+                $.ajax({
+                    url: `http://localhost:3000/nguoidat/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(nguoiDatMoi),
+                    success: function(response) {
+                        alert('Cập nhật người đặt thành công!');
+                        fetchNguoiDatList();
+                        resetForm();
+                        $('#btn-dat-monan').show();
+                        $('#btn-cap-nhat').hide();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Lỗi khi cập nhật người đặt!');
+                    }
+                });
+            }
+    
+            function xoaNguoiDat(id) {
+                if (confirm('Bạn có chắc muốn xóa người đặt này không?')) {
+                    $.ajax({
+                        url: `http://localhost:3000/nguoidat/${id}`,
+                        type: 'DELETE',
+                        success: function(response) {
+                            alert('Xóa người đặt thành công!');
+                            fetchNguoiDatList();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert('Lỗi khi xóa người đặt!');
+                        }
+                    });
+                }
+            }
+
+            function resetForm() {
+                $('#ten').val('');
+                $('#dia_chi').val('');
+                $('#sdt').val('');
+                $('#datmon').val('');
+                $('#soluong_nguoidat').val('');
+                $('#tong_tien').val('');
+                $('#btn-dat-monan').show();
+                $('#btn-cap-nhat').hide();
+            }
+        });
+    </script>
+     <script> var managementItem = document.querySelector('li:nth-child(3)');
+        var subMenu = document.querySelector('.sub-menu');
+        
+        managementItem.addEventListener('click', function() {
+      
+            subMenu.classList.toggle('active');
+        });</script>
+</body>
+</html>
